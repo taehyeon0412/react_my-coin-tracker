@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
   padding: 0px 20px;
+  max-width: 480px;
+  margin: 0 auto;
 `;
 
 const Header = styled.header`
@@ -14,6 +17,7 @@ const Header = styled.header`
 
 const CoinsList = styled.ul``;
 
+/* 코인 */
 const Coin = styled.li`
   background-color: white;
   color: ${(props) => props.theme.bgColor};
@@ -35,49 +39,54 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const coins = [
-  {
-    id: "btc-bitcoin",
-    name: "Bitcoin",
-    symbol: "BTC",
-    rank: 1,
-    is_new: false,
-    is_active: true,
-    type: "coin",
-  },
-  {
-    id: "eth-ethereum",
-    name: "Ethereum",
-    symbol: "ETH",
-    rank: 2,
-    is_new: false,
-    is_active: true,
-    type: "coin",
-  },
-  {
-    id: "hex-hex",
-    name: "HEX",
-    symbol: "HEX",
-    rank: 3,
-    is_new: false,
-    is_active: true,
-    type: "token",
-  },
-];
+const Loader = styled.span`
+  text-align: center;
+  display: block;
+`;
+
+/* 코인의 속성 */
+interface CoinInterface {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  is_new: boolean;
+  is_active: boolean;
+  type: string;
+}
 
 function Coins() {
+  const [coins, setCoins] = useState<CoinInterface[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async () => {
+      const json = await (
+        await fetch("https://api.coinpaprika.com/v1/coins")
+      ).json();
+      setCoins(json.slice(0, 100)); //coins를 0부터 @까지 자른다
+      setLoading(false);
+    })(); /* ()()형식으로 코딩을 짜면 앞에 코드를 바로 실행하게 할 수 있다. */
+  }, []);
+
   return (
     <Container>
       <Header>
         <Title>코인</Title>
       </Header>
-      <CoinsList>
-        {coins.map((coin) => (
-          <Coin key={coin.id}>
-            <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
-          </Coin>
-        ))}
-      </CoinsList>
+
+      {/* 로딩 삼항연산자 시작*/}
+      {loading ? (
+        <Loader>"Loading..."</Loader>
+      ) : (
+        <CoinsList>
+          {coins.map((coin) => (
+            <Coin key={coin.id}>
+              <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+            </Coin>
+          ))}
+        </CoinsList>
+      )}
+      {/* 로딩 삼항연산자 끝*/}
     </Container>
   );
 }
