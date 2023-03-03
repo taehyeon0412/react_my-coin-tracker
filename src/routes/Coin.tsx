@@ -1,7 +1,9 @@
 /* 코인 개인 페이지 */
-import { useLocation, useParams } from "react-router-dom";
+import { Route, Switch, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import Price from "./Price";
+import Chart from "./Chart";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -19,12 +21,46 @@ const Header = styled.header`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  align-items: center;
 `;
 
 const Loader = styled.span`
+  display: flex;
+  justify-content: center;
   text-align: center;
-  display: block;
+  margin-top: 30px;
+  font-size: 2rem;
 `;
+
+const Overview = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 25px;
+  border-radius: 10px;
+  margin: 30px 0px;
+`;
+/* 검은색 박스 */
+
+const OverviewItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  span:first-child {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+`;
+/* 검은색박스 내용 */
+
+const Description = styled.p`
+  margin: 20px;
+  line-height: 1.5; //줄간격
+`;
+/* 코인 설명 */
 
 interface RouteParams {
   coinId: string;
@@ -111,17 +147,70 @@ function Coin() {
 
       setInfo(infoData);
       setPriceInfo(priceData);
+      setLoading(false); //데이터를 불러왔으면 로딩을 false로 지워줌
     })();
   }, []);
+  /* 코드를 시작시 한번만 실행할 때에는 []빈칸으로 둔다 
+  []안에 어떤것을 넣으면 어떤것의 값이 변할때 마다 실행(렌더링) 한다*/
 
   return (
     <Container>
       <Header>
-        <Title>{state?.name || "Loading..."}</Title>
+        <Title>
+          {state?.name ? state.name : loading ? "Loading..." : info?.name}
+        </Title>
       </Header>
 
       {/* 로딩 삼항연산자 시작*/}
-      {loading ? <Loader>"Loading..."</Loader> : null}
+
+      {loading ? (
+        <Loader>"Loading..."</Loader>
+      ) : (
+        <>
+          {/* 첫번째 검은색박스 */}
+          <Overview>
+            <OverviewItem>
+              <span>Rank :</span>
+              <span>{info?.rank}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Symbol :</span>
+              <span>${info?.symbol}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Open Source :</span>
+              <span>{info?.open_source ? "Yes" : "No"}</span>
+            </OverviewItem>
+          </Overview>
+
+          {/* 코인 설명 */}
+          <Description>{info?.description}</Description>
+
+          {/* 두번째 검은색박스 */}
+          <Overview>
+            <OverviewItem>
+              <span>Total Supply :</span>
+              <span>{priceInfo?.total_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Max Supply : </span>
+              <span>{priceInfo?.max_supply}</span>
+            </OverviewItem>
+          </Overview>
+
+          {/*가격, 차트  
+            한번에 하나의 route만 렌더링 하기위해 Switch를 사용해줌*/}
+          <Switch>
+            <Route>
+              <Price />
+            </Route>
+            <Route>
+              <Chart />
+            </Route>
+          </Switch>
+        </>
+      )}
+
       {/* 로딩 삼항연산자 종료*/}
     </Container>
   );

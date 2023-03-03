@@ -43,8 +43,11 @@ const Title = styled.h1`
 `;
 
 const Loader = styled.span`
+  display: flex;
+  justify-content: center;
   text-align: center;
-  display: block;
+  margin-top: 30px;
+  font-size: 2rem;
 `;
 
 const Img = styled.img`
