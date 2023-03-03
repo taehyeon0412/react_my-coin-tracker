@@ -1,3 +1,5 @@
+/* 코인 홈페이지 */
+
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -24,7 +26,8 @@ const Coin = styled.li`
   margin-bottom: 10px;
   border-radius: 15px;
   a {
-    display: block; //div의 속성을 가짐 글씨말고도 width 자체 클릭 가능
+    display: flex;
+    align-items: center;
     padding: 20px;
   }
   &:hover {
@@ -42,6 +45,12 @@ const Title = styled.h1`
 const Loader = styled.span`
   text-align: center;
   display: block;
+`;
+
+const Img = styled.img`
+  width: 25px;
+  height: 25px;
+  margin-right: 15px;
 `;
 
 /* 코인의 속성 */
@@ -81,7 +90,14 @@ function Coins() {
         <CoinsList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+              <Link
+                to={{ pathname: `/${coin.id}`, state: { name: coin.name } }}
+              >
+                <Img
+                  src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                />
+                {coin.name} &rarr;
+              </Link>
             </Coin>
           ))}
         </CoinsList>

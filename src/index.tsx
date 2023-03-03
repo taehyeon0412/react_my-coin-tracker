@@ -8,11 +8,9 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={Theme}>
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>
+  <ThemeProvider theme={Theme}>
+    <App />
+  </ThemeProvider>
 );
 
 /* Theme를 사용하려면 index에 ThemeProvider를 import하고 
