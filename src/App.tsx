@@ -1,6 +1,7 @@
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useState } from "react";
 import Router from "./Router";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 /* createGlobalStyle() 함수로 생성한 전역 스타일 컴포넌트를 
 애플리케이션의 최상위 컴포넌트에 추가해주면 
@@ -74,6 +75,7 @@ function App() {
     <>
       <GlobalStyle />
       <Router />
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
 }

@@ -11,6 +11,8 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import Price from "./Price";
 import Chart from "./Chart";
+import { useQuery } from "react-query";
+import { fetchCoinInfo, fetchCoinPrice } from "../api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -103,7 +105,7 @@ interface RouteState {
   name: string;
 }
 
-interface infoData {
+interface InfoData {
   id: string;
   name: string;
   symbol: string;
@@ -125,7 +127,7 @@ interface infoData {
   last_data_at: string;
 }
 
-interface priceData {
+interface PriceData {
   id: string;
   name: string;
   symbol: string;
@@ -160,41 +162,58 @@ interface priceData {
 }
 
 function Coin() {
-  const [loading, setLoading] = useState(true);
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
-  const [info, setInfo] = useState<infoData>();
-  const [priceInfo, setPriceInfo] = useState<priceData>();
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
-  /* 라우터가 매치 되는지 확인하는 훅
-  유저가선택한 url에 들어가 있다면 오브젝트를 가져옴 */
 
-  /* useEffect 컴포넌트가 렌더링 될 때 
-      특정 작업을 실행할 수 있도록 하는 Hook이다 */
-  useEffect(() => {
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(coinId)
+  );
+  const { isLoading: priceLoading, data: priceData } = useQuery<PriceData>(
+    ["price", coinId],
+    () => fetchCoinPrice(coinId)
+  );
+  /* key값이 coinId로 같을때는 배열로 묶고 
+  식별할 수 있는 아이템을 만들어 줌*/
+
+  /* -------------------------------------- 기존코드
+  const [loading, setLoading] = useState(true);
+  const [info, setInfo] = useState<infoData>();
+  const [priceInfo, setPriceInfo] = useState<priceData>();
+
+  라우터가 매치 되는지 확인하는 훅
+  유저가선택한 url에 들어가 있다면 오브젝트를 가져옴 
+
+  useEffect 컴포넌트가 렌더링 될 때 
+      특정 작업을 실행할 수 있도록 하는 Hook이다
+  
+   useEffect(() => {
     (async () => {
       const infoData = await (
         await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json(); /* 코인 정보 링크 */
+      ).json();  // 코인 정보 링크 
 
       const priceData = await (
         await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json(); /* 코인 가격 정보 링크 */
+      ).json();  // 코인 가격 정보 링크 
 
       setInfo(infoData);
       setPriceInfo(priceData);
       setLoading(false); //데이터를 불러왔으면 로딩을 false로 지워줌
     })();
   }, []);
-  /* 코드를 시작시 한번만 실행할 때에는 []빈칸으로 둔다 
-  []안에 어떤것을 넣으면 어떤것의 값이 변할때 마다 실행(렌더링) 한다*/
+  코드를 시작시 한번만 실행할 때에는 []빈칸으로 둔다 
+  []안에 어떤것을 넣으면 어떤것의 값이 변할때 마다 실행(렌더링) 한다 */
+
+  const loading = infoLoading || priceLoading;
 
   return (
     <Container>
       <Header>
         <Title>
-          {state?.name ? state.name : loading ? "Loading..." : info?.name}
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
       </Header>
 
@@ -208,30 +227,30 @@ function Coin() {
           <Overview>
             <OverviewItem>
               <span>Rank :</span>
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol :</span>
-              <span>${info?.symbol}</span>
+              <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Open Source :</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
+              <span>{infoData?.open_source ? "Yes" : "No"}</span>
             </OverviewItem>
           </Overview>
 
           {/* 코인 설명 */}
-          <Description>{info?.description}</Description>
+          <Description>{infoData?.description}</Description>
 
           {/* 두번째 검은색박스 */}
           <Overview>
             <OverviewItem>
               <span>Total Supply :</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{priceData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply : </span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{priceData?.max_supply}</span>
             </OverviewItem>
           </Overview>
 
