@@ -1,5 +1,12 @@
 /* 코인 개인 페이지 */
-import { Route, Switch, useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  Route,
+  Switch,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import Price from "./Price";
@@ -33,16 +40,17 @@ const Loader = styled.span`
 `;
 
 const Overview = styled.div`
+  /* 검은색 박스 */
   display: flex;
   justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 25px;
   border-radius: 10px;
-  margin: 30px 0px;
+  margin: 20px 0px;
 `;
-/* 검은색 박스 */
 
 const OverviewItem = styled.div`
+  /* 검은색박스 내용 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,13 +62,38 @@ const OverviewItem = styled.div`
     margin-bottom: 8px;
   }
 `;
-/* 검은색박스 내용 */
 
 const Description = styled.p`
+  /* 코인 설명 */
   margin: 20px;
   line-height: 1.5; //줄간격
 `;
-/* 코인 설명 */
+
+const Tabs = styled.div`
+  /* 가격,차트 박스 */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 15px 0px;
+  gap: 20px;
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+  /*isActive를 true,false로 나타내줌*/
+  /* 가격,차트 내용 */
+  text-align: center;
+  text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 0px;
+  border-radius: 20px;
+  color: ${(props) =>
+    props.isActive ? props.theme.accentColor : props.theme.textColor};
+
+  a {
+    display: block;
+  }
+`;
 
 interface RouteParams {
   coinId: string;
@@ -132,6 +165,10 @@ function Coin() {
   const { state } = useLocation<RouteState>();
   const [info, setInfo] = useState<infoData>();
   const [priceInfo, setPriceInfo] = useState<priceData>();
+  const priceMatch = useRouteMatch("/:coinId/price");
+  const chartMatch = useRouteMatch("/:coinId/chart");
+  /* 라우터가 매치 되는지 확인하는 훅
+  유저가선택한 url에 들어가 있다면 오브젝트를 가져옴 */
 
   /* useEffect 컴포넌트가 렌더링 될 때 
       특정 작업을 실행할 수 있도록 하는 Hook이다 */
@@ -199,12 +236,26 @@ function Coin() {
           </Overview>
 
           {/*가격, 차트  
-            한번에 하나의 route만 렌더링 하기위해 Switch를 사용해줌*/}
+            한번에 하나의 route만 렌더링 하기위해 Switch를 사용해줌
+            url을 변경하기 위해 Link를 이용함*/}
+
+          <Tabs>
+            <Tab isActive={chartMatch !== null}>
+              {/*chart를 선택했을때 오브젝트가 나오고 null이 아니므로
+              isActive는 true가 된다 
+              이 값을 tab컴포넌트에 color에 추가한다*/}
+              <Link to={`/${coinId}/chart`}>Chart</Link>
+            </Tab>
+            <Tab isActive={priceMatch !== null}>
+              <Link to={`/${coinId}/price`}>Price</Link>
+            </Tab>
+          </Tabs>
+
           <Switch>
-            <Route>
+            <Route path={`/:coinId/price`}>
               <Price />
             </Route>
-            <Route>
+            <Route path={`/:coinId/chart`}>
               <Chart />
             </Route>
           </Switch>
