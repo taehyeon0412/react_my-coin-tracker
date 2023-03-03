@@ -3,6 +3,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { fetchCoins } from "./../api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -68,7 +70,8 @@ interface CoinInterface {
 }
 
 function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
+  const { isLoading, data } = useQuery<CoinInterface[]>("allCoins", fetchCoins);
+  /* const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     (async () => {
@@ -77,8 +80,8 @@ function Coins() {
       ).json();
       setCoins(json.slice(0, 100)); //coins를 0부터 @까지 자른다
       setLoading(false);
-    })(); /* ()()형식으로 코딩을 짜면 앞에 코드를 바로 실행하게 할 수 있다. */
-  }, []);
+    })(); /* ()()형식으로 코딩을 짜면 앞에 코드를 바로 실행하게 할 수 있다. 
+  }, []); 기존코드*/
 
   return (
     <Container>
@@ -87,11 +90,11 @@ function Coins() {
       </Header>
 
       {/* 로딩 삼항연산자 시작*/}
-      {loading ? (
+      {isLoading ? (
         <Loader>"Loading..."</Loader>
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               <Link
                 to={{ pathname: `/${coin.id}`, state: { name: coin.name } }}
