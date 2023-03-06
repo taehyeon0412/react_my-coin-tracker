@@ -46,7 +46,40 @@ function Chart({ coinId }: ChartProps) {
             },
             chart: { height: 300, width: 500, toolbar: { show: false } },
             stroke: { curve: "smooth", width: 4 },
+            fill: {
+              type: "gradient",
+              gradient: {
+                gradientToColors: [" #0be881"],
+                stops: [0, 100],
+              },
+            },
+            colors: ["#0fbcf9"],
+            /*차트에 마우스 올렸을때 나오는 것*/
+            tooltip: {
+              y: {
+                formatter: (value) => `$ ${value}`,
+              },
+            },
+            /* x축 값 */
+            xaxis: {
+              type: "datetime",
+              axisBorder: { show: false },
+              axisTicks: { show: false },
+              labels: { show: false },
+              categories: data?.map(
+                (price) => new Date(+price.time_close * 1000).toISOString()
+                /* The left-hand side of an arithmetic operation must be of type 
+                ‘any’ ‘number’ or an enum type라는 오류는 
+                price.time_close와 *1000에서 나오는 오류다 
+                이유는 Date()로 생성된 값을 연산에 사용하기 때문이다 typescript에서는
+                명시적으로 연산이 가능한 숫자와 같이 처리를 해줘야된다 
+                이 오류는 단항연산자인 +를 지정해주면 해결된다 
+                price.time_close앞에 +를 붙이면 new Date()의 결과를 숫자(number)로 
+                취급되기 때문에 연산에 사용할 수 있게된다 */
+              ),
+            },
           }}
+          /* 차트 옵션 */
         />
       )}
     </div>
