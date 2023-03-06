@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import styled from "styled-components";
 
 interface ChartData {
   time_open: string;
@@ -17,13 +18,17 @@ interface ChartProps {
   coinId: string;
 }
 
+const PriceChart = styled.div`
+  margin-top: 30px;
+`;
+
 function Chart({ coinId }: ChartProps) {
   const { isLoading, data } = useQuery<ChartData[]>(
     ["chartUpDown", coinId],
     () => fetchCoinHistory(coinId)
   );
   return (
-    <div>
+    <PriceChart>
       {isLoading ? (
         "Loading chart..."
       ) : (
@@ -82,7 +87,7 @@ function Chart({ coinId }: ChartProps) {
           /* 차트 옵션 */
         />
       )}
-    </div>
+    </PriceChart>
   );
 }
 

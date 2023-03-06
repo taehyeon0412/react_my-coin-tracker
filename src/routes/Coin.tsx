@@ -13,6 +13,7 @@ import Price from "./Price";
 import Chart from "./Chart";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -173,7 +174,10 @@ function Coin() {
   );
   const { isLoading: priceLoading, data: priceData } = useQuery<PriceData>(
     ["price", coinId],
-    () => fetchCoinPrice(coinId)
+    () => fetchCoinPrice(coinId),
+    {
+      refetchInterval: 3000,
+    }
   );
   /* key값이 coinId로 같을때는 배열로 묶고 
   식별할 수 있는 아이템을 만들어 줌*/
@@ -211,6 +215,11 @@ function Coin() {
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -234,8 +243,8 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source :</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price :</span>
+              <span>${priceData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
 
