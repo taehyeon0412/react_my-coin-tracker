@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 
 const Head = styled.header`
   display: flex;
@@ -47,7 +48,16 @@ const Percent24 = styled.span<IPercent24>`
    #4deb6d= 초록색
    24시간 변동률*/
 
-const SymbolDiv = styled.div``;
+const SymbolDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SymbolImg = styled.img`
+  width: 85px;
+  height: 85px;
+`;
 
 interface IHeader {
   coinName?: string;
@@ -55,7 +65,13 @@ interface IHeader {
   per24?: number;
 }
 
+interface RouteState {
+  symbol: string;
+}
+
 function Header({ coinName, price, per24 }: IHeader) {
+  const { state } = useLocation<RouteState>();
+
   return (
     <Head>
       <TitleDiv>
@@ -69,7 +85,11 @@ function Header({ coinName, price, per24 }: IHeader) {
           <span>전일대비</span>
         </Percent24>
       </TitleDiv>
-      <SymbolDiv></SymbolDiv>
+      <SymbolDiv>
+        <SymbolImg
+          src={`https://coinicons-api.vercel.app/api/icon/${state?.symbol.toLowerCase()}`}
+        />
+      </SymbolDiv>
     </Head>
   );
 }
@@ -82,3 +102,7 @@ export default Header;
 
 /* typescript에서 undefined오류가 뜨면 !를 붙여주면 강제로 undefined이 
 아니라는것을 인지시켜줄 수 있다. */
+
+/* 차트,가격 클릭시 src Uncaught TypeError 오류 나는 이유
+=> 차트,가격을 누르면 페이지가 변경되면서 기존에 받은 state를 못받게되서
+차트 가격 페이지에서도 받아올수 있게 state를 설정해줘야된다. */

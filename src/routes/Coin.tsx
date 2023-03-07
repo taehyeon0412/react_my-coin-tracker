@@ -20,18 +20,28 @@ const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
+  /* 전체 */
 `;
 
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  /* 상단 내비게이션바 */
 `;
 
 const BtnHome = styled.button`
   background-color: transparent;
   border: none;
   color: ${(props) => props.theme.grayText};
+  /* 뒤로가기 버튼 */
+`;
+
+const ThemeToggleBtn = styled.button`
+  background-color: transparent;
+  border: none;
+  color: ${(props) => props.theme.grayText};
+  /* 테마 토글 버튼 */
 `;
 
 const Loader = styled.span`
@@ -41,6 +51,7 @@ const Loader = styled.span`
   margin-top: 30px;
   font-size: 2rem;
   color: ${(props) => props.theme.textColor};
+  /* 로딩 글씨 */
 `;
 
 const Overview = styled.div`
@@ -105,6 +116,7 @@ interface RouteParams {
 
 interface RouteState {
   name: string;
+  symbol: string;
 }
 
 interface InfoData {
@@ -231,6 +243,7 @@ function Coin() {
                 <i className="fa-solid fa-chevron-left fa-2x"></i>
               </Link>
             </BtnHome>
+            <ThemeToggleBtn>토글버튼</ThemeToggleBtn>
           </Nav>
 
           {/* 헤더부분 
@@ -281,10 +294,24 @@ function Coin() {
               {/*chart를 선택했을때 오브젝트가 나오고 null이 아니므로
               isActive는 true가 된다 
               이 값을 tab컴포넌트에 color에 추가한다*/}
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+              <Link
+                to={{
+                  pathname: `/${coinId}/chart`,
+                  state: { name: infoData?.name, symbol: infoData?.symbol },
+                }}
+              >
+                Chart
+              </Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link
+                to={{
+                  pathname: `/${coinId}/price`,
+                  state: { name: infoData?.name, symbol: infoData?.symbol },
+                }}
+              >
+                Price
+              </Link>
             </Tab>
           </Tabs>
 

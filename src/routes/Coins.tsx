@@ -102,7 +102,10 @@ function Coins() {
           {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               <Link
-                to={{ pathname: `/${coin.id}`, state: { name: coin.name } }}
+                to={{
+                  pathname: `/${coin.id}`,
+                  state: { name: coin.name, symbol: coin.symbol },
+                }}
               >
                 <Img
                   src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
@@ -119,3 +122,9 @@ function Coins() {
 }
 
 export default Coins;
+
+/*Link는 object를 통해서 데이터 그 자체를 다른 페이지에 보낼수 있다.
+
+<Link to={{ pathname: `/${coin.id}`, state: { name: coin.name } }}>
+=>> 
+*/
