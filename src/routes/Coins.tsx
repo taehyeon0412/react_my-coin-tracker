@@ -33,18 +33,26 @@ const ThemeToggleBtn = styled.button`
   /* 테마 토글 버튼 */
 `;
 
-const CoinsList = styled.ul``;
+const CoinsList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  gap: 15px;
+`;
 
 /* 코인 */
-const Coin = styled.li`
-  background-color: white;
-  color: ${(props) => props.theme.bgColor};
+const Coin = styled.div`
+  background-color: ${(props) => props.theme.divColor};
+  color: ${(props) => props.theme.textColor};
   margin-bottom: 10px;
   border-radius: 15px;
   a {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 20px;
+    gap: 15px;
   }
   &:hover {
     a {
@@ -68,9 +76,8 @@ const Loader = styled.span`
 `;
 
 const Img = styled.img`
-  width: 25px;
-  height: 25px;
-  margin-right: 15px;
+  width: 50px;
+  height: 50px;
 `;
 
 /* 코인의 속성 */
@@ -120,7 +127,7 @@ function Coins() {
         <Loader>"Loading..."</Loader>
       ) : (
         <CoinsList>
-          {data?.slice(0, 100).map((coin) => (
+          {data?.slice(0, 12).map((coin) => (
             <Coin key={coin.id}>
               <Link
                 to={{
@@ -131,7 +138,7 @@ function Coins() {
                 <Img
                   src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                 />
-                {coin.name} &rarr;
+                {coin.name}
               </Link>
             </Coin>
           ))}
