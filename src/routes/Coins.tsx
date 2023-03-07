@@ -18,6 +18,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
 const CoinsList = styled.ul``;
@@ -87,10 +88,10 @@ function Coins() {
   return (
     <Container>
       <Helmet>
-        <title>코인</title>
+        <title>Coin Tracker</title>
       </Helmet>
       <Header>
-        <Title>코인</Title>
+        <Title>Coin Tracker</Title>
       </Header>
 
       {/* 로딩 삼항연산자 시작*/}

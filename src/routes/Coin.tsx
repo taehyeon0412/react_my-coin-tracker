@@ -14,6 +14,7 @@ import Chart from "./Chart";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
 import { Helmet } from "react-helmet";
+import Header from "./../components/Header";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -31,18 +32,6 @@ const BtnHome = styled.button`
   background-color: transparent;
   border: none;
   color: ${(props) => props.theme.grayText};
-`;
-
-const Header = styled.header`
-  height: 10vh;
-  display: flex;
-  align-items: center;
-`;
-
-const Title = styled.h1`
-  font-size: 25px;
-  color: ${(props) => props.theme.textColor};
-  align-items: center;
 `;
 
 const Loader = styled.span`
@@ -188,7 +177,7 @@ function Coin() {
     ["price", coinId],
     () => fetchCoinPrice(coinId),
     {
-      refetchInterval: 5000,
+      refetchInterval: 3000,
     }
   );
   /* key값이 coinId로 같을때는 배열로 묶고 
@@ -227,30 +216,35 @@ function Coin() {
 
   return (
     <Container>
-      <Helmet>
-        <title>{infoData?.name}</title>
-      </Helmet>
-
-      <Nav>
-        <BtnHome>
-          <Link to={"/"}>
-            <i className="fa-solid fa-chevron-left fa-2x"></i>
-          </Link>
-        </BtnHome>
-      </Nav>
-
-      <Header>
-        <Title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-        </Title>
-      </Header>
-
-      {/* 로딩 삼항연산자 시작*/}
-
       {loading ? (
         <Loader>"Loading..."</Loader>
       ) : (
         <>
+          <Helmet>
+            <title>{infoData?.name}</title>
+          </Helmet>
+
+          {/* 네비게이션바 */}
+          <Nav>
+            <BtnHome>
+              <Link to={"/"}>
+                <i className="fa-solid fa-chevron-left fa-2x"></i>
+              </Link>
+            </BtnHome>
+          </Nav>
+
+          {/* 헤더부분 
+              헤더 컴포넌트를 만들었고 거기에 있던 props를 
+              넘겨받는것이기 때문에 <Header></Header>사이에 쓰는것이 아닌
+              첫번째 괄호헤더안에 props를 쓴다*/}
+          <Header
+            coinName={infoData?.name}
+            price={Number(priceData?.quotes.USD.price.toFixed(2))}
+            per24={priceData?.quotes.USD.percent_change_24h}
+          />
+
+          {/* 로딩 삼항연산자 시작*/}
+
           {/* 첫번째 검은색박스 */}
           <Overview>
             <OverviewItem>
@@ -260,10 +254,6 @@ function Coin() {
             <OverviewItem>
               <span>Symbol :</span>
               <span>${infoData?.symbol}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>가격 :</span>
-              <span>${priceData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
 
