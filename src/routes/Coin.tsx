@@ -21,16 +21,27 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
+const Nav = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+const BtnHome = styled.button`
+  background-color: transparent;
+  border: none;
+  color: ${(props) => props.theme.grayText};
+`;
+
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: center;
   align-items: center;
 `;
 
 const Title = styled.h1`
-  font-size: 48px;
-  color: ${(props) => props.theme.accentColor};
+  font-size: 25px;
+  color: ${(props) => props.theme.textColor};
   align-items: center;
 `;
 
@@ -40,13 +51,14 @@ const Loader = styled.span`
   text-align: center;
   margin-top: 30px;
   font-size: 2rem;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Overview = styled.div`
   /* 검은색 박스 */
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.divColor};
   padding: 10px 25px;
   border-radius: 10px;
   margin: 20px 0px;
@@ -85,9 +97,9 @@ const Tab = styled.span<{ isActive: boolean }>`
   /* 가격,차트 내용 */
   text-align: center;
   text-transform: uppercase;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.divColor};
   font-size: 16px;
-  font-weight: 600;
+  font-weight: ${(props) => (props.isActive ? "700" : "500")};
   padding: 10px 0px;
   border-radius: 20px;
   color: ${(props) =>
@@ -176,7 +188,7 @@ function Coin() {
     ["price", coinId],
     () => fetchCoinPrice(coinId),
     {
-      refetchInterval: 3000,
+      refetchInterval: 5000,
     }
   );
   /* key값이 coinId로 같을때는 배열로 묶고 
@@ -216,10 +228,17 @@ function Coin() {
   return (
     <Container>
       <Helmet>
-        <title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-        </title>
+        <title>{infoData?.name}</title>
       </Helmet>
+
+      <Nav>
+        <BtnHome>
+          <Link to={"/"}>
+            <i className="fa-solid fa-chevron-left fa-2x"></i>
+          </Link>
+        </BtnHome>
+      </Nav>
+
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -235,7 +254,7 @@ function Coin() {
           {/* 첫번째 검은색박스 */}
           <Overview>
             <OverviewItem>
-              <span>Rank :</span>
+              <span>순위 :</span>
               <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
@@ -243,7 +262,7 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Price :</span>
+              <span>가격 :</span>
               <span>${priceData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
@@ -254,11 +273,11 @@ function Coin() {
           {/* 두번째 검은색박스 */}
           <Overview>
             <OverviewItem>
-              <span>Total Supply :</span>
+              <span>총 공급량 :</span>
               <span>{priceData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Max Supply : </span>
+              <span>최대 공급량 : </span>
               <span>{priceData?.max_supply}</span>
             </OverviewItem>
           </Overview>

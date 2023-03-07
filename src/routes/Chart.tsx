@@ -46,10 +46,10 @@ function Chart({ coinId }: ChartProps) {
                  못읽어오면 undefined 형태가 되서 문제가 생김
                  그래서 as를 이용하여 number배열 형태로 강제해줘서 오류를 잡음 */
           options={{
-            theme: {
-              mode: "dark",
+            grid: { show: false },
+            chart: {
+              toolbar: { show: false },
             },
-            chart: { height: 300, width: 500, toolbar: { show: false } },
             stroke: { curve: "smooth", width: 4 },
             fill: {
               type: "gradient",
@@ -63,6 +63,12 @@ function Chart({ coinId }: ChartProps) {
             tooltip: {
               y: {
                 formatter: (value) => `$ ${value}`,
+              },
+            },
+            /* y축값 */
+            yaxis: {
+              labels: {
+                show: false,
               },
             },
             /* x축 값 */

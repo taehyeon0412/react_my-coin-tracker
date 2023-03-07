@@ -4,7 +4,7 @@ import { QueryClient } from "react-query";
 import { QueryClientProvider } from "react-query";
 import { ThemeProvider } from "styled-components";
 import App from "./App";
-import { Theme } from "./theme";
+import { lightTheme, darkTheme } from "./theme";
 
 const queryClient = new QueryClient();
 
@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={Theme}>
+    <ThemeProvider theme={darkTheme}>
       <App />
     </ThemeProvider>
   </QueryClientProvider>
