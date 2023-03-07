@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchCoins } from "./../api";
 import { Helmet } from "react-helmet";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -16,9 +18,19 @@ const Container = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 5px 0px 20px;
+`;
+
+const ThemeToggleBtn = styled.button`
+  background-color: transparent;
+  border: none;
+  color: ${(props) => props.theme.grayText};
+  & :hover {
+    color: ${(props) => props.theme.textColor};
+  }
+  /* 테마 토글 버튼 */
 `;
 
 const CoinsList = styled.ul``;
@@ -44,6 +56,7 @@ const Coin = styled.li`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  margin-right: 50px;
 `;
 
 const Loader = styled.span`
@@ -85,6 +98,11 @@ function Coins() {
     })(); /* ()()형식으로 코딩을 짜면 앞에 코드를 바로 실행하게 할 수 있다. 
   }, []); 기존코드*/
 
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  /* useSetRecoilState => atom의 state값을 바꿀 수 있다 */
+  const toggleDark = () => setDarkAtom((prev) => !prev);
+  /* 토글 버튼을 누르면 isDarkAtom의 현재값을 반대로 바꾼다 */
+
   return (
     <Container>
       <Helmet>
@@ -92,6 +110,9 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>Coin Tracker</Title>
+        <ThemeToggleBtn onClick={toggleDark}>
+          <i className="fa-regular fa-moon fa-2x"></i>
+        </ThemeToggleBtn>
       </Header>
 
       {/* 로딩 삼항연산자 시작*/}

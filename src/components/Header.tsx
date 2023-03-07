@@ -53,11 +53,13 @@ const SymbolDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
+/* 심볼 디브 */
 
 const SymbolImg = styled.img`
   width: 85px;
   height: 85px;
 `;
+/* 심볼 이미지 */
 
 interface IHeader {
   coinName?: string;

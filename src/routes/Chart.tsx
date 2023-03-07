@@ -2,6 +2,8 @@ import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import styled from "styled-components";
+import { isDarkAtom } from "../atoms";
+import { useRecoilValue } from "recoil";
 
 interface ChartData {
   time_open: string;
@@ -27,6 +29,7 @@ function Chart({ coinId }: ChartProps) {
     ["chartUpDown", coinId],
     () => fetchCoinHistory(coinId)
   );
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <PriceChart>
       {isLoading ? (
@@ -47,7 +50,7 @@ function Chart({ coinId }: ChartProps) {
                  그래서 as를 이용하여 number배열 형태로 강제해줘서 오류를 잡음 */
           options={{
             theme: {
-              mode: "dark" /* 모드전환 토글 하기 */,
+              mode: isDark ? "dark" : "light" /* 모드전환 토글 하기 */,
             },
             grid: { show: false },
             chart: {

@@ -15,6 +15,8 @@ import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
 import { Helmet } from "react-helmet";
 import Header from "./../components/Header";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -41,6 +43,9 @@ const ThemeToggleBtn = styled.button`
   background-color: transparent;
   border: none;
   color: ${(props) => props.theme.grayText};
+  & :hover {
+    color: ${(props) => props.theme.textColor};
+  }
   /* 테마 토글 버튼 */
 `;
 
@@ -71,8 +76,8 @@ const OverviewItem = styled.div`
   align-items: center;
 
   span:first-child {
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: bolder;
     text-transform: uppercase;
     margin-bottom: 8px;
   }
@@ -225,6 +230,12 @@ function Coin() {
   []안에 어떤것을 넣으면 어떤것의 값이 변할때 마다 실행(렌더링) 한다 */
 
   const loading = infoLoading || priceLoading;
+  /* or연산자 */
+
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  /* useSetRecoilState => atom의 state값을 바꿀 수 있다 */
+  const toggleDark = () => setDarkAtom((prev) => !prev);
+  /* 토글 버튼을 누르면 isDarkAtom의 현재값을 반대로 바꾼다 */
 
   return (
     <Container>
@@ -243,7 +254,9 @@ function Coin() {
                 <i className="fa-solid fa-chevron-left fa-2x"></i>
               </Link>
             </BtnHome>
-            <ThemeToggleBtn>토글버튼</ThemeToggleBtn>
+            <ThemeToggleBtn onClick={toggleDark}>
+              <i className="fa-regular fa-moon fa-2x"></i>
+            </ThemeToggleBtn>
           </Nav>
 
           {/* 헤더부분 
@@ -271,7 +284,7 @@ function Coin() {
           </Overview>
 
           {/* 코인 설명 */}
-          <Description>{infoData?.description}</Description>
+          <Description>{infoData?.description?.slice(0, 235)}...</Description>
 
           {/* 두번째 검은색박스 */}
           <Overview>

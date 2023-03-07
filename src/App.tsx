@@ -1,7 +1,9 @@
-import styled, { createGlobalStyle, keyframes } from "styled-components";
-import { useState } from "react";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { lightTheme, darkTheme } from "./theme";
+import { isDarkAtom } from "./atoms";
+import { useRecoilValue } from "recoil";
 
 /* createGlobalStyle() 함수로 생성한 전역 스타일 컴포넌트를 
 애플리케이션의 최상위 컴포넌트에 추가해주면 
@@ -71,11 +73,15 @@ a{
 `;
 
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
+  /* useRecoilValue=> Recoil상태의 값을 읽을수만 있음 */
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Router />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
     </>
   );
 }
