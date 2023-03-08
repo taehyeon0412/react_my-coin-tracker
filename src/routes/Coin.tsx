@@ -310,7 +310,10 @@ function Coin() {
               <Link
                 to={{
                   pathname: `/${coinId}/chart`,
-                  state: { name: infoData?.name, symbol: infoData?.symbol },
+                  state: {
+                    name: infoData?.name,
+                    symbol: infoData?.symbol,
+                  },
                 }}
               >
                 Chart
@@ -320,7 +323,16 @@ function Coin() {
               <Link
                 to={{
                   pathname: `/${coinId}/price`,
-                  state: { name: infoData?.name, symbol: infoData?.symbol },
+                  state: {
+                    name: infoData?.name,
+                    symbol: infoData?.symbol,
+                    price30m: priceData?.quotes.USD.percent_change_30m,
+                    price1h: priceData?.quotes.USD.percent_change_1h,
+                    price6h: priceData?.quotes.USD.percent_change_6h,
+                    price24h: priceData?.quotes.USD.percent_change_24h,
+                    price7d: priceData?.quotes.USD.percent_change_7d,
+                    price1y: priceData?.quotes.USD.percent_change_1y,
+                  },
                 }}
               >
                 Price

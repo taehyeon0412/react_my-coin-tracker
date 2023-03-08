@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { isError, useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import styled from "styled-components";
@@ -24,17 +24,32 @@ const PriceChart = styled.div`
   margin-top: 30px;
 `;
 
+const ErrorMs = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0px;
+`;
+
 function Chart({ coinId }: ChartProps) {
   const { isLoading, data } = useQuery<ChartData[]>(
     ["chartUpDown", coinId],
-    () => fetchCoinHistory(coinId)
+    () => fetchCoinHistory(coinId),
+    {
+      refetchInterval: 5000,
+    }
   );
   const isDark = useRecoilValue(isDarkAtom);
+
+  /*  
+  console.log(data);
+  console.log(Array.isArray(data)); */
+
   return (
     <PriceChart>
       {isLoading ? (
         "Loading chart..."
-      ) : (
+      ) : Array.isArray(data) ? (
         <ApexChart
           type="line"
           series={[
@@ -99,6 +114,8 @@ function Chart({ coinId }: ChartProps) {
           }}
           /* 차트 옵션 */
         />
+      ) : (
+        <ErrorMs>차트 데이터가 없습니다.</ErrorMs>
       )}
     </PriceChart>
   );
@@ -108,4 +125,13 @@ export default Chart;
 
 /* 1.우리가 보고자 하는 암호화폐가 무엇인지 알아야됨 
    2.coinId props를 차트페이지로 보내준다
+*/
+
+/* 차트 데이터가 없을 경우 페이지 전체가 에러가남
+해결 방법 : 
+1.console.log(data);를 하여 data는 배열이라는것을 알아냄
+2.console.log(Array.isArray(data));를 사용하여 오류가 나는 페이지는 
+데이터 배열이 아닌것을 확인함
+Array,isArray(data)를 삼항연산자로 넣어 true일때 차트를 그리고
+false일때 오류 문구를 나오게 수정함
 */
