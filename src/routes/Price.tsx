@@ -29,10 +29,18 @@ const TimeSpan = styled.span`
 `;
 /* 시간 */
 
-const PercentBox = styled.div``;
+const PercentBox = styled.div<{ percent?: number }>`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: ${(props) => (props.percent! >= 0 ? `#4deb6d` : `#e83a42`)};
+`;
 /* 퍼센트 박스 */
 
-const PercentSpan = styled.span``;
+const PercentSpan = styled.span`
+  font-weight: 800;
+  font-size: 30px;
+`;
 
 interface IPriceData {
   price30m?: number;
@@ -60,8 +68,15 @@ function Price() {
       {priceList.map((item) => (
         <PriceBox key={item.text}>
           <TimeSpan>{item.text} 전보다</TimeSpan>
-          <PercentBox>
-            <PercentSpan>{item.value}%</PercentSpan>
+          <PercentBox percent={item.value}>
+            <PercentSpan>
+              {item.value! >= 0 ? `+${item.value}%` : `${item.value}%`}
+            </PercentSpan>
+            {item.value! >= 0 ? (
+              <i className="fa-solid fa-arrow-trend-up fa-2x"></i>
+            ) : (
+              <i className="fa-solid fa-arrow-trend-down fa-2x"></i>
+            )}
           </PercentBox>
         </PriceBox>
       ))}
@@ -80,3 +95,8 @@ export default Price;
   5. price div 전체색깔 적용 
   #e83a42= 빨간색 
    #4deb6d= 초록색*/
+
+/* 
+<i class="fa-solid fa-arrow-trend-up"></i> 올라가는 화살
+<i class="fa-solid fa-arrow-trend-down"></i> 내려가는 화살
+*/
