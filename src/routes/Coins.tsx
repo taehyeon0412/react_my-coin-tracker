@@ -149,12 +149,12 @@ function Coins() {
   const toggleDark = () => setDarkAtom((prev) => !prev);
   /* 토글 버튼을 누르면 isDarkAtom의 현재값을 반대로 바꾼다 */
 
-  const homeMatch = useRouteMatch("/");
+  /* const homeMatch = useRouteMatch("/");
   const page1Match = useRouteMatch("/page/1");
   const page2Match = useRouteMatch("/page/2");
   const page3Match = useRouteMatch("/page/3");
   const matchList = [page1Match, page2Match, page3Match];
-  const homeList = [true];
+  const homeList = [true]; */
 
   return (
     <Container>

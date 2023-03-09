@@ -1,4 +1,5 @@
 {
+  "homepage": " https://taehyeon0412.github.io/react_my-coin-tracker/",
   "name": "react_my-coin-tracker",
   "version": "0.1.0",
   "private": true,
@@ -12,6 +13,7 @@
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "apexcharts": "^3.37.1",
+    "gh-pages": "^5.0.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-dom": "^18.2.0",
@@ -28,7 +30,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
