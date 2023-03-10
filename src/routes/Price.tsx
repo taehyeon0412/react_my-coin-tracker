@@ -15,10 +15,10 @@ const PriceBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
   background-color: ${(props) => props.theme.divColor};
+  width: auto;
   border-radius: 15px;
-  padding: 20px;
+  padding: 20px 0px;
   gap: 15px;
 `;
 /* 가격박스 */
@@ -34,12 +34,21 @@ const PercentBox = styled.div<{ percent?: number }>`
   gap: 10px;
   align-items: center;
   color: ${(props) => (props.percent! >= 0 ? `#4deb6d` : `#e83a42`)};
+  i {
+    font-size: 30px;
+    @media screen and (max-width: 400px) {
+      font-size: 20px;
+    }
+  }
 `;
 /* 퍼센트 박스 */
 
 const PercentSpan = styled.span`
   font-weight: 800;
   font-size: 30px;
+  @media screen and (max-width: 400px) {
+    font-size: 25px;
+  }
 `;
 
 interface IPriceData {
@@ -73,9 +82,9 @@ function Price() {
               {item.value! >= 0 ? `+${item.value}%` : `${item.value}%`}
             </PercentSpan>
             {item.value! >= 0 ? (
-              <i className="fa-solid fa-arrow-trend-up fa-2x"></i>
+              <i className="fa-solid fa-arrow-trend-up fa-2xl"></i>
             ) : (
-              <i className="fa-solid fa-arrow-trend-down fa-2x"></i>
+              <i className="fa-solid fa-arrow-trend-down fa-2xl"></i>
             )}
           </PercentBox>
         </PriceBox>
