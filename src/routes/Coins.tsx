@@ -18,9 +18,13 @@ const Container = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: end;
   align-items: center;
-  margin: 5px 0px 20px;
+  justify-content: center;
+  position: relative;
+  button {
+    position: absolute;
+    right: 10px;
+  }
 `;
 
 const ThemeToggleBtn = styled.button`
@@ -30,6 +34,7 @@ const ThemeToggleBtn = styled.button`
   & :hover {
     color: ${(props) => props.theme.textColor};
   }
+
   /* 테마 토글 버튼 */
 `;
 
@@ -64,9 +69,8 @@ const Coin = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: 43px;
   color: ${(props) => props.theme.accentColor};
-  margin-right: 50px;
 `;
 
 const Loader = styled.span`

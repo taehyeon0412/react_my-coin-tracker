@@ -6,7 +6,7 @@ const Container = styled.div`
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
 `;
 /* 전체박스 */
 
