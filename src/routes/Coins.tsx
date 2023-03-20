@@ -8,6 +8,7 @@ import { fetchCoins } from "./../api";
 import { Helmet } from "react-helmet";
 import { useSetRecoilState } from "recoil";
 import { isDarkAtom } from "../atoms";
+import Pagination from "react-js-pagination";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -51,6 +52,7 @@ const Coin = styled.div`
   color: ${(props) => props.theme.textColor};
   margin-bottom: 10px;
   border-radius: 15px;
+  height: 140px;
   a {
     display: flex;
     flex-direction: column;
@@ -86,43 +88,39 @@ const Img = styled.img`
   height: 50px;
 `;
 
-/* const AllPageDiv = styled.div`
-  display: flex;
-  margin-top: 30px;
-  justify-content: center;
-`; //버튼 전체
-
-const PageList = styled.ul`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-`;
-
-const PageBtn = styled.div<{ isActive: boolean }>`
+const PaginationDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 50px;
-  background-color: ${(props) => props.theme.divColor};
-  border-radius: 40px;
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
-  font-weight: ${(props) => (props.isActive ? 800 : 500)};
-
-  &:hover {
+  margin-top: 15px;
+  ul {
+    display: flex;
+    gap: 10px;
+  }
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: ${(props) => props.theme.divColor};
+    border-radius: 20px;
+    &:hover {
+      color: ${(props) => props.theme.accentColor};
+      box-shadow: 0px 3px 5px rgba(0, 0, 0, 0);
+      transform: scale(1.1);
+    }
+    a {
+      padding: 15px;
+    }
+  }
+  .active {
     color: ${(props) => props.theme.accentColor};
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0);
     transform: scale(1.1);
+    font-weight: 900;
   }
-  a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-`; // 개별 버튼 */
+`;
 
 interface CoinInterface {
   id: string;
@@ -150,15 +148,18 @@ function Coins() {
 
   const setDarkAtom = useSetRecoilState(isDarkAtom);
   /* useSetRecoilState => atom의 state값을 바꿀 수 있다 */
+
   const toggleDark = () => setDarkAtom((prev) => !prev);
   /* 토글 버튼을 누르면 isDarkAtom의 현재값을 반대로 바꾼다 */
 
-  /* const homeMatch = useRouteMatch("/");
-  const page1Match = useRouteMatch("/page/1");
-  const page2Match = useRouteMatch("/page/2");
-  const page3Match = useRouteMatch("/page/3");
-  const matchList = [page1Match, page2Match, page3Match];
-  const homeList = [true]; */
+  //페이지 네이션 시작
+  const [totalItemsCount, setTotalItemsCount] = useState(12);
+  /* setTotalItemsCount는  */
+  const [page, setPage] = useState(1);
+  const handlePageChange = (pageNumber: number) => {
+    setPage(pageNumber);
+  };
+  //페이지 네이션 끝
 
   return (
     <Container>
@@ -178,32 +179,40 @@ function Coins() {
       ) : (
         <>
           <CoinsList>
-            {data?.slice(0, 24).map((coin) => (
-              <Coin key={coin.id}>
-                <Link
-                  to={{
-                    pathname: `/${coin.id}`,
-                    state: { name: coin.name, symbol: coin.symbol },
-                  }}
-                >
-                  <Img
-                    src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
-                  />
-                  {coin.name}
-                </Link>
-              </Coin>
-            ))}
+            {data
+              ?.slice(
+                totalItemsCount * (page - 1),
+                totalItemsCount * (page - 1) + totalItemsCount
+              ) /* 페이지가 1이면 0부터 totalItemsCount까지 
+                  페이지가 2이면 totalItemsCount부터~ */
+              .map((coin) => (
+                <Coin key={coin.id}>
+                  <Link
+                    to={{
+                      pathname: `/${coin.id}`,
+                      state: { name: coin.name, symbol: coin.symbol },
+                    }}
+                  >
+                    <Img
+                      src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                    />
+                    {coin.name}
+                  </Link>
+                </Coin>
+              ))}
           </CoinsList>
 
-          {/*  <AllPageDiv>
-                <PageList>
-                  {["1", "2", "3", "4", "5"].map((page) => (
-                    <PageBtn key={page} isActive={homeList[+page - 1]}>
-                      <Link to={`/page${page}`}>{page}</Link>
-                    </PageBtn>
-                  ))}
-                </PageList>
-              </AllPageDiv> */}
+          <PaginationDiv>
+            <Pagination
+              activePage={page}
+              itemsCountPerPage={12}
+              totalItemsCount={240}
+              pageRangeDisplayed={5}
+              prevPageText={"‹"}
+              nextPageText={"›"}
+              onChange={handlePageChange}
+            />
+          </PaginationDiv>
         </>
       )}
 
@@ -222,3 +231,13 @@ export default Coins;
 
 /*  isExact : [boolean] true일 경우 
 전체 경로가 완전히 매칭될 경우에만 요청을 수행 */
+
+/* activePage: 현재 페이지
+itemsCountPerPage: 한 페이지당 보여줄 리스트 아이템의 개수
+totalItemsCount: 총 아이템의 개수
+pageRangeDisplayed: Paginator 내에서 보여줄 페이지의 범위
+prevPageText: "이전"을 나타낼 텍스트 (prev, <, ...)
+nextPageText: "다음"을 나타낼 텍스트 (next, >, ...)
+onChange: 페이지가 바뀔 때 핸들링해줄 함수 */
+
+/* https://api.coinpaprika.com/v1 */

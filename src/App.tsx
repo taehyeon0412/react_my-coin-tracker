@@ -74,7 +74,10 @@ a{
 
 function App() {
   const isDark = useRecoilValue(isDarkAtom);
-  /* useRecoilValue=> Recoil상태의 값을 읽을수만 있음 */
+  /* useRecoilValue=> Recoil상태의 값을 읽을수만 있음 
+  atom.ts에 있는 isDarkAtom의 상태값을 읽어와 그것을 isDark에 넣는다
+  */
+
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
