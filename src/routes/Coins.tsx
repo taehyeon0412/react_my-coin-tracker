@@ -52,7 +52,11 @@ const Coin = styled.div`
   color: ${(props) => props.theme.textColor};
   margin-bottom: 10px;
   border-radius: 15px;
-  height: 140px;
+  @media screen and (max-width: 490px) {
+    overflow-x: auto;
+  }
+  //overflow-x: auto; 그리드 가로폭 비율 자동 조절
+
   a {
     display: flex;
     flex-direction: column;
@@ -68,6 +72,16 @@ const Coin = styled.div`
       transform: scale(1.1);
     }
   }
+`;
+
+const CoinName = styled.span`
+  max-width: 100px;
+  text-align: center;
+  white-space: nowrap;
+  //스페이스와 탭, 줄바꿈, 자동줄바꿈을 어떻게 처리할지 정하는 속성
+  overflow: hidden;
+  text-overflow: ellipsis;
+  //overflow=> 줄 바꿈을 하지 않을 때 넘치는 텍스트 처리
 `;
 
 const Title = styled.h1`
@@ -92,26 +106,40 @@ const PaginationDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 15px;
+  padding-top: 20px;
+  width: auto;
+
   ul {
+    width: auto;
     display: flex;
     gap: 10px;
+    @media screen and (max-width: 450px) {
+      gap: 5px;
+    }
   }
   li {
+    width: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
     height: 40px;
     background-color: ${(props) => props.theme.divColor};
     border-radius: 20px;
+    @media screen and (max-width: 450px) {
+      width: 35px;
+      height: 35px;
+    }
     &:hover {
       color: ${(props) => props.theme.accentColor};
       box-shadow: 0px 3px 5px rgba(0, 0, 0, 0);
       transform: scale(1.1);
     }
     a {
-      padding: 15px;
+      padding: 10px;
+      font-size: 16px;
+      @media screen and (max-width: 450px) {
+        font-size: 13px;
+      }
     }
   }
   .active {
@@ -196,7 +224,7 @@ function Coins() {
                     <Img
                       src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                     />
-                    {coin.name}
+                    <CoinName>{coin.name}</CoinName>
                   </Link>
                 </Coin>
               ))}
@@ -207,7 +235,7 @@ function Coins() {
               activePage={page}
               itemsCountPerPage={12}
               totalItemsCount={240}
-              pageRangeDisplayed={5}
+              pageRangeDisplayed={4}
               prevPageText={"‹"}
               nextPageText={"›"}
               onChange={handlePageChange}
