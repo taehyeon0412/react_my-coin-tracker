@@ -69,6 +69,7 @@ interface IHeader {
 
 interface RouteState {
   symbol: string;
+  id: string;
 }
 
 function Header({ coinName, price, per24 }: IHeader) {
@@ -89,7 +90,7 @@ function Header({ coinName, price, per24 }: IHeader) {
       </TitleDiv>
       <SymbolDiv>
         <SymbolImg
-          src={`https://coinicons-api.vercel.app/api/icon/${state?.symbol.toLowerCase()}`}
+          src={`https://cryptocurrencyliveprices.com/img/${state.symbol.toLowerCase()}-${coinName?.toLowerCase()}.png`}
         />
       </SymbolDiv>
     </Head>

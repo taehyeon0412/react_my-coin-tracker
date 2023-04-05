@@ -187,6 +187,7 @@ function Coins() {
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
   };
+
   //페이지 네이션 끝
 
   return (
@@ -222,7 +223,7 @@ function Coins() {
                     }}
                   >
                     <Img
-                      src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                      src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
                     />
                     <CoinName>{coin.name}</CoinName>
                   </Link>
