@@ -69,7 +69,6 @@ interface IHeader {
 
 interface RouteState {
   symbol: string;
-  id: string;
 }
 
 function Header({ coinName, price, per24 }: IHeader) {
@@ -90,7 +89,9 @@ function Header({ coinName, price, per24 }: IHeader) {
       </TitleDiv>
       <SymbolDiv>
         <SymbolImg
-          src={`https://cryptocurrencyliveprices.com/img/${state.symbol.toLowerCase()}-${coinName?.toLowerCase()}.png`}
+          src={`https://cryptocurrencyliveprices.com/img/${state.symbol.toLowerCase()}-${coinName
+            ?.toLowerCase()
+            .replace(/\s+/g, "-")}.png`}
         />
       </SymbolDiv>
     </Head>
@@ -110,3 +111,5 @@ export default Header;
 => 차트,가격을 누르면 페이지가 변경되면서 기존에 받은 state를 못받게되서
 차트 가격 페이지에서도 받아올수 있게 차트 가격 페이지 클릭시
 coin페이지에서 state를 차트페이지로 넘겨줘야된다. */
+
+/* replace(/\s+/g, "-") => 띄어쓰기마다 -(하이픈) 추가 */
