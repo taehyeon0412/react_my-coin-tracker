@@ -1,46 +1,70 @@
-# Getting Started with Create React App
+## **🛠사용 기술 및 라이브러리**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- react-router
+- react-router-dom
+- styled components
+- react-query
+- Apexcharts
+- Recoil
+- Typescript
+- react-js-pagination 라이브러리
 
-## Available Scripts
+## Route
 
-In the project directory, you can run:
+- `/` Home 화면(코인 목록)
+- `/:coinId` 특정 코인 정보
+- `/:coinId/chart` 특정 코인 시세 라인 차트
+- `/:coinId/price` 특정 코인 가격 변화율 정보
 
-### `npm start`
+## 🎨 UI
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**1. Home** `/`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**2. Coin** `/:coinId`
 
-### `npm test`
+**3. Chart** `/:coinId/chart`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**4. Price `/:coinId/price`**
 
-### `npm run build`
+**5. 다크 모드 on/off**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## **📝 기능**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> **Home** `/`
+> 
+- API를 fetch 하여 코인의 정보를 받은 뒤 react-js-pagination 라이브러리를 이용하여 
+각 페이지마다 12개의 코인이 출력되게 하였습니다.
+- `Link` 를 이용하여 coin을 클릭 시 코인 세부 정보 페이지로 이동하게 하였습니다.
 
-### `npm run eject`
+> **coin** `/:coinId`
+> 
+- API를 fetch 하여 코인의 세부 정보와 가격 정보를 가져오고 클릭한 코인ID를 이용하여
+코인의 이미지를 불러옵니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+> **Chart** `/:coinId/chart`(**Apexchart API)사용**
+> 
+- Line Chart - 현재부터 지난 20일까지의 가격 정보를 불러와 각 날의 종가를 그래프화 시켰습니다. 
+차트 데이터가 없으면 - “차트 데이터가 없습니다”로 출력됩니다.
+- Candle Chart - 현재부터 지난 20일까지의 가격 정보를 불러와 각 날의 시가, 고가, 저가, 종가 (open, high, low, close)를 차트화 하였습니다.
+차트 데이터가 없으면 - “차트 데이터가 없습니다”로 출력됩니다.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+> **Price `/:coinId/price`**
+> 
+- 현재 시간의 가격과 지난 시간의 가격을 비교하여 변화율을 퍼센트(%)로 나타내줍니다.
+(30분, 1시간, 6시간, 1일, 7일, 1년)
+- 변화율이 양수면 `up icon`과 함께 빨간색
+변화율이 음수면 `down icon`과 함께 초록색
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+> **다크 모드 on/off (Recoil 사용)**
+> 
+- `textColor`: 글자 색
+- `bgColor`: 배경 색
+- `accentColor`: Coin 화면에서 `Tab` 버튼 클릭 시 글자 색
+- `divColor`: 각 컴포넌트의 배경 색
+- `grayDiv` : Div의 배경색
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## **📑 참고 API**
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [https://api.coinpaprika.com/v1](https://api.coinpaprika.com/v1%60) : coin 정보 API
+- https://coinicons-api.vercel.app/api/icon/{coin.id} : coin icon API
