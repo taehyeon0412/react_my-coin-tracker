@@ -16,6 +16,9 @@
 - `/:coinId/chart` 특정 코인 시세 라인 차트
 - `/:coinId/price` 특정 코인 가격 변화율 정보
 
+![다크모드](https://github.com/taehyeon0412/canvas_JS_mystyle/assets/71374539/d3fb716f-6112-4d5d-ad6c-7b0b94564f3f)
+
+
 ## 🎨 UI
 
 **1. Home** `/`
