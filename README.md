@@ -1,7 +1,3 @@
-
-
-![다크모드](https://github.com/taehyeon0412/canvas_JS_mystyle/assets/71374539/d3fb716f-6112-4d5d-ad6c-7b0b94564f3f)
-
 ## **🛠사용 기술 및 라이브러리**
 
 - react-router
@@ -27,13 +23,26 @@
 
 **1. Home** `/`
 
+![코인메인화면1](https://github.com/taehyeon0412/react_movie-site-clone/assets/71374539/07c7abcf-8da0-439c-af5f-528add779b25)
+
 **2. Coin** `/:coinId`
+
+![코인 세부정보](https://github.com/taehyeon0412/react_movie-site-clone/assets/71374539/1eac57ee-f965-40ff-a365-8286385c7d79)
 
 **3. Chart** `/:coinId/chart`
 
+![차트1](https://github.com/taehyeon0412/react_movie-site-clone/assets/71374539/575c4cdf-220d-43e1-8dd7-d4206b0c60e4)
+
+
+![차트2](https://github.com/taehyeon0412/react_movie-site-clone/assets/71374539/c5a2b5df-0879-4c15-a2e4-050a0dd88a20)
+
 **4. Price `/:coinId/price`**
 
+![코인 가격정보](https://github.com/taehyeon0412/react_movie-site-clone/assets/71374539/df14ef99-a9a0-45f5-bb39-f030be24b454)
+
 **5. 다크 모드 on/off**
+
+![다크모드](https://github.com/taehyeon0412/react_movie-site-clone/assets/71374539/75b3354e-f84c-441c-8bbf-5c1363c17917)
 
 
 ## **📝 기능**
@@ -75,3 +84,18 @@
 
 - [https://api.coinpaprika.com/v1](https://api.coinpaprika.com/v1%60) : coin 정보 API
 - https://coinicons-api.vercel.app/api/icon/{coin.id} : coin icon API
+
+<br/>
+<br/>
+
+## 💡 성장 경험
+
+### React-Query에 대한 이해
+
+기존에 사용하던 비동기 처리 방식에 비해 코드를 간소화 하고 처리를 간편하게 하는 장점이 있는 라이브러리인 것 같습니다. 
+
+처음 써보는 기술이라 기술에 대한 이해도를 높이고 외부 api 비동기 처리를 어떻게 하는지에 대해서 중점적으로 학습하였습니다.
+
+### 상태관리에 대한 이해
+
+Recoil을 사용하여 전역 상태를 관리하고  다크모드 구현을 통해 이해도를 높이며 학습했습니다.
